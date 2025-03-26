@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Visualizations</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+    <div class="container mt-4">
+        <h2>Data Visualizations</h2>
+        {% for col in categorical_columns %}
+            <div class="mt-4">
+                <h4>{{ col }} Countplot</h4>
+                <img src="{{ url_for('static', filename=col + '_countplot.png') }}" class="img-fluid">
+            </div>
+        {% endfor %}
+        <div class="mt-5">
+            <h4>Correlation Heatmap</h4>
+            <img src="{{ url_for('static', filename='corr_heatmap.png') }}" class="img-fluid">
+        </div>
+        <a href="/" class="btn btn-secondary mt-4">Go Back Home</a>
+    </div>
+</body>
+</html>
