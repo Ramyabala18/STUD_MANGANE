@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template_string, request
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -9,17 +9,24 @@ app = Flask(__name__)
 # Load the dataset
 data = pd.read_csv("Survey_AI.csv")
 
+# Load HTML files from the same directory
+def load_html(filename):
+    with open(filename, 'r') as file:
+        return file.read()
+
 # Route for homepage
 @app.route('/')
 def home():
-    return render_template('index.html')
+    html = load_html('index.html')
+    return render_template_string(html)
 
 # Route to display dataset stats
 @app.route('/stats')
 def stats():
     desc = data.describe(include='all').to_html(classes='table table-striped')
     shape = data.shape
-    return render_template('stats.html', shape=shape, desc=desc)
+    html = load_html('stats.html')
+    return render_template_string(html, shape=shape, desc=desc)
 
 # Route to visualize plots
 @app.route('/visuals')
@@ -47,7 +54,8 @@ def visuals():
         plt.savefig('static/corr_heatmap.png')
         plt.close()
 
-    return render_template('visuals.html', categorical_columns=categorical_columns)
+    html = load_html('visuals.html')
+    return render_template_string(html, categorical_columns=categorical_columns)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
